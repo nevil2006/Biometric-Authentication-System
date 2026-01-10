@@ -2,10 +2,10 @@ import cv2
 from ultralytics import YOLO
 
 # Load your trained model
-model = YOLO("best.pt")   # path to your model
+model = YOLO(r"C:\Users\ADMIN\OneDrive\Desktop\biometric autheication\best.pt")   # path to your model
 
 # Load image
-image_path = "test.jpg"  # put your image path here
+image_path = r"C:\Users\ADMIN\OneDrive\Desktop\biometric autheication\Real Images\000001.jpg"  # put your image path here
 img = cv2.imread(image_path)
 
 # Run detection
