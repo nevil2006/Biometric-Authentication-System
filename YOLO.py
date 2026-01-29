@@ -1,37 +1,24 @@
 import cv2
 from ultralytics import YOLO
 
-# Load your trained model
+# Load your trained model ONCE
 model = YOLO(r"C:\Users\ADMIN\OneDrive\Desktop\biometric autheication\best.pt")
 
-# Load image
-image_path = r"C:\Users\ADMIN\OneDrive\Desktop\biometric autheication\Real Images\000001.jpg"  
-img = cv2.imread(image_path)
+def detect_face(frame):
+    """
+    Takes a frame (from camera or image)
+    Returns cropped face image or None
+    """
 
-# Run detection
-results = model(img)
+    results = model(frame)
 
-# Draw detections
-for result in results:
-    for box in result.boxes:
-        x1, y1, x2, y2 = map(int, box.xyxy[0])
-        conf = box.conf[0]
-        cls = int(box.cls[0])
+    for result in results:
+        for box in result.boxes:
+            x1, y1, x2, y2 = map(int, box.xyxy[0])
 
-        label = f"Face {conf:.2f}"
+            # Crop face region
+            face = frame[y1:y2, x1:x2]
 
-        cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-        cv2.putText(
-            img,
-            label,
-            (x1, y1 - 10),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.6,
-            (0, 255, 0),
-            2
-        )
+            return face  # return FIRST detected face
 
-# Show output
-cv2.imshow("Face Detection", img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    return None
